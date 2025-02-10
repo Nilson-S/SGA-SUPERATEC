@@ -11,32 +11,32 @@ class EstadisticaController extends Controller
 {
     public function index()
     {
-        // 1️⃣ Total de inscripciones por curso
+        //  Total de inscripciones por curso
         $inscripcionesPorCurso = Inscripcion::selectRaw('curso_id, COUNT(*) as total')
             ->groupBy('curso_id')
             ->with('curso')
             ->get();
 
-        // 2️⃣ Inscripciones por mes (últimos 12 meses)
+        //  Inscripciones por mes (últimos 12 meses)
         $inscripcionesPorMes = Inscripcion::selectRaw('DATE_FORMAT(created_at, "%Y-%m") as mes, COUNT(*) as total')
             ->groupBy('mes')
             ->orderBy('mes')
             ->get();
 
-        // 3️⃣ Distribución de alumnos por género
+        //  Distribución de alumnos por género
         $distribucionGenero = Inscripcion::with('alumno')
             ->get()
             ->groupBy('alumno.genero')
             ->map->count();
 
-        // 4️⃣ Estadísticas de calificaciones: Aprobados vs Reprobados por Curso
+        //  Estadísticas de calificaciones: Aprobados vs Reprobados por Curso
         $calificacionesPorCurso = Calificacion::selectRaw('curso_id, 
                 SUM(CASE WHEN calificacion >= 10 THEN 1 ELSE 0 END) as aprobados,
                 SUM(CASE WHEN calificacion < 10 THEN 1 ELSE 0 END) as reprobados')
             ->groupBy('curso_id')
             ->with('curso')
             ->get();
-        // 5️⃣ Ingresos por curso
+        //  Ingresos por curso
         $ingresosPorCurso = Inscripcion::selectRaw('curso_id, SUM(monto_pago) as total_ingresos')
             ->groupBy('curso_id')
             ->with('curso')
