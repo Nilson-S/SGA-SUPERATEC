@@ -7,9 +7,17 @@ use Illuminate\Http\Request;
 
 class AlumnoController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $alumnos = Alumno::all();
+        // Buscar por cédula si se proporciona un parámetro de búsqueda
+        $query = Alumno::with('inscripciones.curso');
+
+        if ($request->has('search')) {
+            $query->where('cedula', 'like', '%' . $request->search . '%');
+        }
+
+        $alumnos = $query->paginate(10);
+
         return view('alumnos.index', compact('alumnos'));
     }
 

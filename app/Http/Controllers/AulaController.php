@@ -42,6 +42,13 @@ class AulaController extends Controller
         return redirect()->route('aulas.index')->with('success', 'Aula actualizada correctamente.');
     }
 
+    public function show($id)
+    {
+        $aula = Aula::with('cursos')->findOrFail($id);
+        return view('aulas.show', compact('aula'));
+    }
+
+
     public function destroy(Aula $aula)
     {
         $aula->delete();

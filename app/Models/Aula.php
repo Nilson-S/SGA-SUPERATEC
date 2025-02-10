@@ -15,4 +15,10 @@ class Aula extends Model
         'nombre',
         'descripcion',
     ];
+
+    // Relación: Un aula puede tener muchos cursos
+    public function cursos()
+    {
+        return $this->hasMany(Curso::class, 'aula_id');
+    }
 }

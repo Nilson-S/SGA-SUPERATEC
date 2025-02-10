@@ -11,21 +11,17 @@ class Horario extends Model
 
     protected $fillable = [
         'curso_id',
-        'taller_id',
-        'aula_id',
         'facilitador_id',
+        'aula_id',
+        'dias', 
         'hora_inicio',
         'hora_fin',
     ];
+    
 
     public function curso()
     {
         return $this->belongsTo(Curso::class);
-    }
-
-    public function taller()
-    {
-        return $this->belongsTo(Taller::class);
     }
 
     public function aula()
@@ -37,5 +33,10 @@ class Horario extends Model
     {
         return $this->belongsTo(Facilitador::class);
     }
-    
+
+    // Accesor para formatear los días como array
+    public function getDiasArrayAttribute()
+    {
+        return explode(',', $this->dias);
+    }
 }

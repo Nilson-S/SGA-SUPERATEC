@@ -19,4 +19,8 @@ class Facilitador extends Model
         'telefono',
         'correo',
     ];
+    public function cursos()
+    {
+        return $this->hasMany(Curso::class, 'facilitador_id');
+    }
 }

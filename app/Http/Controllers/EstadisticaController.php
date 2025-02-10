@@ -2,39 +2,62 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Inscripcion;
+use App\Models\Calificacion;
 use Illuminate\Http\Request;
-use App\Models\Alumno;
-use App\Models\Curso;
-use App\Models\Taller;
-use App\Models\Pago;
+use Carbon\Carbon;
 
 class EstadisticaController extends Controller
 {
     public function index()
     {
-        // Total de ingresos por cursos y talleres
-        $ingresosPorCurso = Curso::with('inscripciones.pagos')
+        // 1️⃣ Total de inscripciones por curso
+        $inscripcionesPorCurso = Inscripcion::selectRaw('curso_id, COUNT(*) as total')
+            ->groupBy('curso_id')
+            ->with('curso')
+            ->get();
+
+        // 2️⃣ Inscripciones por mes (últimos 12 meses)
+        $inscripcionesPorMes = Inscripcion::selectRaw('DATE_FORMAT(created_at, "%Y-%m") as mes, COUNT(*) as total')
+            ->groupBy('mes')
+            ->orderBy('mes')
+            ->get();
+
+        // 3️⃣ Distribución de alumnos por género
+        $distribucionGenero = Inscripcion::with('alumno')
             ->get()
-            ->map(function ($curso) {
-                return [
-                    'curso' => $curso->nombre,
-                    'ingresos' => $curso->inscripciones->sum(fn($inscripcion) => $inscripcion->pagos->sum('monto')),
-                ];
-            });
+            ->groupBy('alumno.genero')
+            ->map->count();
 
-        $ingresosPorTaller = Taller::with('inscripciones.pagos')
-            ->get()
-            ->map(function ($taller) {
-                return [
-                    'taller' => $taller->nombre,
-                    'ingresos' => $taller->inscripciones->sum(fn($inscripcion) => $inscripcion->pagos->sum('monto')),
-                ];
-            });
+        // 4️⃣ Estadísticas de calificaciones: Aprobados vs Reprobados por Curso
+        $calificacionesPorCurso = Calificacion::selectRaw('curso_id, 
+                SUM(CASE WHEN calificacion >= 10 THEN 1 ELSE 0 END) as aprobados,
+                SUM(CASE WHEN calificacion < 10 THEN 1 ELSE 0 END) as reprobados')
+            ->groupBy('curso_id')
+            ->with('curso')
+            ->get();
+        // 5️⃣ Ingresos por curso
+        $ingresosPorCurso = Inscripcion::selectRaw('curso_id, SUM(monto_pago) as total_ingresos')
+            ->groupBy('curso_id')
+            ->with('curso')
+            ->get();
 
-        // Total de alumnos inscritos por curso y taller
-        $alumnosPorCurso = Curso::withCount('inscripciones')->get();
-        $alumnosPorTaller = Taller::withCount('inscripciones')->get();
+        // Estadísticas en tiempo real
+        $totalIngresos = Inscripcion::sum('monto_pago');
+        $totalInscripciones = Inscripcion::count();
+        $inscripcionesHoy = Inscripcion::whereDate('created_at', Carbon::today())->count();
+        $totalAlumnos = Inscripcion::distinct('alumno_id')->count('alumno_id');
 
-        return view('estadisticas.index', compact('ingresosPorCurso', 'ingresosPorTaller', 'alumnosPorCurso', 'alumnosPorTaller'));
+        return view('estadisticas.index', compact(
+            'inscripcionesPorCurso',
+            'inscripcionesPorMes',
+            'distribucionGenero',
+            'calificacionesPorCurso',
+            'totalInscripciones',
+            'inscripcionesHoy',
+            'totalAlumnos',
+            'ingresosPorCurso',
+            'totalIngresos'
+        ));
     }
 }

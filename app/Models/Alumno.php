@@ -29,4 +29,14 @@ class Alumno extends Model
     {
         return Carbon::parse($this->fecha_nacimiento)->age;
     }
+    public function inscripciones()
+    {
+        return $this->hasMany(Inscripcion::class, 'alumno_id');
+    }
+
+    // Relación con Calificaciones
+    public function calificaciones()
+    {
+        return $this->hasMany(Calificacion::class, 'alumno_id');
+    }
 }

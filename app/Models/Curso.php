@@ -31,4 +31,16 @@ class Curso extends Model
     {
         return $this->belongsTo(Facilitador::class);
     }
+    public function inscripciones()
+    {
+        return $this->hasMany(Inscripcion::class, 'curso_id');
+    }
+    public function calificaciones()
+    {
+        return $this->hasMany(Calificacion::class);
+    }
+    public function horarios()
+    {
+        return $this->hasMany(Horario::class);
+    }
 }

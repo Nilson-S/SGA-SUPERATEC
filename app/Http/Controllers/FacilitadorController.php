@@ -3,15 +3,26 @@
 namespace App\Http\Controllers;
 
 use App\Models\Facilitador;
+use App\Models\Horario;
 use Illuminate\Http\Request;
 
 class FacilitadorController extends Controller
 {
-    public function index()
-    {
-        $facilitadores = Facilitador::all();
-        return view('facilitadores.index', compact('facilitadores'));
+    public function index(Request $request)
+{
+    // Cargar los cursos impartidos por cada facilitador
+    $query = Facilitador::with('cursos');
+
+    // Filtrar por cédula si se proporciona un parámetro de búsqueda
+    if ($request->has('search')) {
+        $query->where('cedula', 'like', '%' . $request->search . '%');
     }
+
+    $facilitadores = $query->paginate(10);
+
+    return view('facilitadores.index', compact('facilitadores'));
+}
+
 
     public function create()
     {
@@ -34,13 +45,10 @@ class FacilitadorController extends Controller
         return redirect()->route('facilitadores.index')->with('success', 'Facilitador registrado correctamente.');
     }
 
-    public function edit(Facilitador $facilitador)
+    public function update(Request $request, $id)
     {
-        return view('facilitadores.edit', compact('facilitador'));
-    }
+        $facilitador = Facilitador::findOrFail($id);
 
-    public function update(Request $request, Facilitador $facilitador)
-    {
         $request->validate([
             'nombres' => 'required|string|max:255',
             'apellidos' => 'required|string|max:255',
@@ -50,9 +58,26 @@ class FacilitadorController extends Controller
             'correo' => 'nullable|email|max:255',
         ]);
 
-        $facilitador->update($request->all());
+        $facilitador->update([
+            'nombres' => $request->nombres,
+            'apellidos' => $request->apellidos,
+            'cedula' => $request->cedula,
+            'especialidad' => $request->especialidad,
+            'telefono' => $request->telefono,
+            'correo' => $request->correo,
+        ]);
 
         return redirect()->route('facilitadores.index')->with('success', 'Facilitador actualizado correctamente.');
+    }
+
+    public function verHorarios(Facilitador $facilitador)
+    {
+        // Obtener horarios del facilitador
+        $horarios = Horario::with(['curso', 'aula'])
+            ->where('facilitador_id', $facilitador->id)
+            ->get();
+
+        return view('facilitadores.horarios_facilitador', compact('facilitador', 'horarios'));
     }
 
     public function destroy(Facilitador $facilitador)

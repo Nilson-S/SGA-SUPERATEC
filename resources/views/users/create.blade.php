@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="container py-5">
-    <h1 class="h3 text-center mb-4">Registrar Nuevo Usuario</h1>
+    <h1 class="h3 text-center mb-4">Registrar Nuevo Usuario Administrador</h1>
     <form action="{{ route('users.store') }}" method="POST" class="shadow p-4 rounded bg-light">
         @csrf
         <div class="row">
@@ -32,7 +32,7 @@
                     <label for="genero" class="form-label">
                         <i class="fas fa-venus-mars"></i> Género
                     </label>
-                    <select name="genero" id="genero" class="form-control" required>
+                    <select name="genero" id="genero" class="form-select" required>
                         <option value="masculino">Masculino</option>
                         <option value="femenino">Femenino</option>
                     </select>

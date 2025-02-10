@@ -102,11 +102,22 @@
                 <a class="nav-link" href="{{ route('cursos.index') }}"><i class="fas fa-book"></i> Cursos</a>
             </li>
             <li class="nav-item">
+                <a class="nav-link" href="{{ route('horarios.index') }}"><i class="fas fa-clock"></i> Horarios</a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" href="{{ route('inscripciones.index') }}"><i class="fas fa-clipboard"></i> Inscripciones</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('pagos.index') }}"><i class="fas fa-money-bill"></i> Pagos</a>
+                <a class="nav-link" href="{{ route('calificaciones.index') }}"><i class="fas fa-star"></i> Calificaciones</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('aulas.index') }}"><i class="fas fa-school"></i> Aulas</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('estadisticas.index') }}"><i class="fas fa-chart-line"></i> Estadísticas</a>
+            </li>
+            
+
             @if (Auth::check())
             <li class="nav-item">
                 <form action="{{ route('logout') }}" method="POST">

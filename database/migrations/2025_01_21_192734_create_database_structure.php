@@ -13,15 +13,6 @@ class CreateDatabaseStructure extends Migration
      */
     public function up()
     {
-        // Tabla de usuarios (administrador)
-        Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->string('password');
-            $table->timestamps();
-        });
-
         // Tabla de alumnos
         Schema::create('alumnos', function (Blueprint $table) {
             $table->id();
@@ -93,16 +84,7 @@ class CreateDatabaseStructure extends Migration
             $table->timestamps();
         });
 
-        // Tabla de pagos
-        Schema::create('pagos', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('inscripcion_id');
-            $table->enum('metodo_pago', ['Transferencia Bancaria', 'Efectivo Bs', 'Efectivo USD']);
-            $table->decimal('monto', 10, 2);
-            $table->foreign('inscripcion_id')->references('id')->on('inscripciones')->onDelete('cascade');
-            $table->timestamps();
-        });
-
+       
         // Tabla de calificaciones
         Schema::create('calificaciones', function (Blueprint $table) {
             $table->id();
@@ -123,7 +105,7 @@ class CreateDatabaseStructure extends Migration
     public function down()
     {
         Schema::dropIfExists('calificaciones');
-        Schema::dropIfExists('pagos');
+
         Schema::dropIfExists('inscripciones');
         Schema::dropIfExists('horarios');
         Schema::dropIfExists('aulas');

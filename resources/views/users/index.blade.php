@@ -62,26 +62,42 @@
                         <div class="modal fade" id="detailsModal{{ $user->id }}" tabindex="-1"
                             aria-labelledby="detailsModalLabel{{ $user->id }}" aria-hidden="true">
                             <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-header bg-info text-white">
-                                        <h5 class="modal-title" id="detailsModalLabel{{ $user->id }}">Detalles del
-                                            Usuario</h5>
+                                <div class="modal-content shadow-lg border-0 rounded-4">
+                                    <div class="modal-header bg-info text-white rounded-top">
+                                        <h5 class="modal-title fw-bold" id="detailsModalLabel{{ $user->id }}">
+                                            <i class="fas fa-user-circle"></i> Detalles del Usuario
+                                        </h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                     </div>
-                                    <div class="modal-body">
-                                        <p><strong>Nombre:</strong> {{ $user->name }}</p>
-                                        <p><strong>Apellido:</strong> {{ $user->apellido }}</p>
-                                        <p><strong>Cédula:</strong> {{ $user->cedula }}</p>
-                                        <p><strong>Género:</strong> {{ ucfirst($user->genero) }}</p>
-                                        <p><strong>Fecha de Nacimiento:</strong> {{ $user->fecha_nacimiento }}</p>
-                                        <p><strong>Edad:</strong> {{ $user->edad }} años</p>
-                                        <p><strong>Correo Electrónico:</strong> {{ $user->email }}</p>
-                                        <p><strong>Fecha de Creación:</strong> {{ $user->created_at->format('d/m/Y') }}</p>
+                                    <div class="modal-body bg-light">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <p><strong><i class="fas fa-user"></i> Nombre:</strong> {{ $user->name }}
+                                                </p>
+                                                <p><strong><i class="fas fa-user-tag"></i> Apellido:</strong>
+                                                    {{ $user->apellido }}</p>
+                                                <p><strong><i class="fas fa-id-card"></i> Cédula:</strong>
+                                                    {{ $user->cedula }}</p>
+                                                <p><strong><i class="fas fa-venus-mars"></i> Género:</strong>
+                                                    {{ ucfirst($user->genero) }}</p>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p><strong><i class="fas fa-calendar-alt"></i> Fecha de Nacimiento:</strong>
+                                                    {{ $user->fecha_nacimiento }}</p>
+                                                <p><strong><i class="fas fa-birthday-cake"></i> Edad:</strong>
+                                                    {{ $user->edad }} años</p>
+                                                <p><strong><i class="fas fa-envelope"></i> Correo Electrónico:</strong>
+                                                    {{ $user->email }}</p>
+                                                <p><strong><i class="fas fa-clock"></i> Fecha de Creación:</strong>
+                                                    {{ $user->created_at->format('d/m/Y') }}</p>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary shadow-sm"
-                                            data-bs-dismiss="modal">Cerrar</button>
+                                    <div class="modal-footer bg-light rounded-bottom">
+                                        <button type="button" class="btn btn-secondary shadow-sm" data-bs-dismiss="modal">
+                                            <i class="fas fa-times"></i> Cerrar
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -91,83 +107,89 @@
                         <div class="modal fade" id="editModal{{ $user->id }}" tabindex="-1"
                             aria-labelledby="editModalLabel{{ $user->id }}" aria-hidden="true">
                             <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-header bg-warning text-dark">
-                                        <h5 class="modal-title" id="editModalLabel{{ $user->id }}">Editar Usuario</h5>
+                                <div class="modal-content shadow-lg border-0 rounded-4">
+                                    <div class="modal-header bg-warning text-dark rounded-top">
+                                        <h5 class="modal-title fw-bold" id="editModalLabel{{ $user->id }}">
+                                            <i class="fas fa-edit"></i> Editar Usuario
+                                        </h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                     </div>
                                     <form action="{{ route('users.update', $user) }}" method="POST">
                                         @csrf
                                         @method('PUT')
-                                        <div class="modal-body">
+                                        <div class="modal-body bg-light">
                                             <div class="row">
                                                 <!-- Primera columna -->
                                                 <div class="col-md-6">
                                                     <div class="mb-3">
-                                                        <label for="name" class="form-label">Nombre</label>
-                                                        <input type="text" name="name" id="name"
-                                                            class="form-control" value="{{ $user->name }}" required>
+                                                        <label class="form-label"><i class="fas fa-user"></i> Nombre</label>
+                                                        <input type="text" name="name" class="form-control"
+                                                            value="{{ $user->name }}" required>
                                                     </div>
                                                     <div class="mb-3">
-                                                        <label for="apellido" class="form-label">Apellido</label>
-                                                        <input type="text" name="apellido" id="apellido"
-                                                            class="form-control" value="{{ $user->apellido }}" required>
+                                                        <label class="form-label"><i class="fas fa-user-tag"></i>
+                                                            Apellido</label>
+                                                        <input type="text" name="apellido" class="form-control"
+                                                            value="{{ $user->apellido }}" required>
                                                     </div>
                                                     <div class="mb-3">
-                                                        <label for="cedula" class="form-label">Cédula de Identidad</label>
-                                                        <input type="text" name="cedula" id="cedula"
-                                                            class="form-control" value="{{ $user->cedula }}" required>
+                                                        <label class="form-label"><i class="fas fa-id-card"></i> Cédula de
+                                                            Identidad</label>
+                                                        <input type="text" name="cedula" class="form-control"
+                                                            value="{{ $user->cedula }}" required>
                                                     </div>
                                                     <div class="mb-3">
-                                                        <label for="genero" class="form-label">Género</label>
-                                                        <select name="genero" id="genero" class="form-control" required>
+                                                        <label class="form-label"><i class="fas fa-venus-mars"></i>
+                                                            Género</label>
+                                                        <select name="genero" class="form-select" required>
                                                             <option value="masculino"
                                                                 {{ $user->genero == 'masculino' ? 'selected' : '' }}>
-                                                                Masculino
-                                                            </option>
+                                                                Masculino</option>
                                                             <option value="femenino"
                                                                 {{ $user->genero == 'femenino' ? 'selected' : '' }}>
-                                                                Femenino
-                                                            </option>
+                                                                Femenino</option>
                                                         </select>
                                                     </div>
                                                 </div>
+
                                                 <!-- Segunda columna -->
                                                 <div class="col-md-6">
                                                     <div class="mb-3">
-                                                        <label for="fecha_nacimiento" class="form-label">Fecha de
-                                                            Nacimiento</label>
+                                                        <label class="form-label"><i class="fas fa-calendar-alt"></i>
+                                                            Fecha de Nacimiento</label>
                                                         <input type="date" name="fecha_nacimiento"
-                                                            id="fecha_nacimiento" class="form-control"
-                                                            value="{{ $user->fecha_nacimiento }}" required>
+                                                            class="form-control" value="{{ $user->fecha_nacimiento }}"
+                                                            required>
                                                     </div>
                                                     <div class="mb-3">
-                                                        <label for="email" class="form-label">Correo
+                                                        <label class="form-label"><i class="fas fa-envelope"></i> Correo
                                                             Electrónico</label>
-                                                        <input type="email" name="email" id="email"
-                                                            class="form-control" value="{{ $user->email }}" required>
+                                                        <input type="email" name="email" class="form-control"
+                                                            value="{{ $user->email }}" required>
                                                     </div>
                                                     <div class="mb-3">
-                                                        <label for="password" class="form-label">Nueva Contraseña
-                                                            (Opcional)</label>
-                                                        <input type="password" name="password" id="password"
-                                                            class="form-control">
+                                                        <label class="form-label"><i class="fas fa-lock"></i> Nueva
+                                                            Contraseña (Opcional)</label>
+                                                        <input type="password" name="password" class="form-control">
                                                     </div>
                                                     <div class="mb-3">
-                                                        <label for="password_confirmation" class="form-label">Confirmar
+                                                        <label class="form-label"><i class="fas fa-lock"></i> Confirmar
                                                             Contraseña</label>
                                                         <input type="password" name="password_confirmation"
-                                                            id="password_confirmation" class="form-control">
+                                                            class="form-control">
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="modal-footer">
-                                            <button type="submit" class="btn btn-success shadow-sm">Guardar
-                                                Cambios</button>
+                                        <div class="modal-footer bg-light rounded-bottom">
+                                            <button type="submit" class="btn btn-success shadow-sm">
+                                                <i class="fas fa-save"></i> Guardar Cambios
+                                            </button>
                                             <button type="button" class="btn btn-secondary shadow-sm"
-                                                data-bs-dismiss="modal">Cancelar</button>
+                                                data-bs-dismiss="modal">
+                                                <i class="fas fa-times"></i> Cancelar
+                                            </button>
                                         </div>
                                     </form>
                                 </div>

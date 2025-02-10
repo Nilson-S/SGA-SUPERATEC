@@ -15,6 +15,9 @@ class Inscripcion extends Model
         'alumno_id',
         'curso_id',
         'fecha_inscripcion',
+        'monto_pago',
+        'metodo_pago',
+        'fecha_pago',
     ];
 
     public function alumno()
@@ -24,14 +27,6 @@ class Inscripcion extends Model
 
     public function curso()
     {
-        return $this->belongsTo(Curso::class);
-    }
-    public function pagos()
-    {
-        return $this->hasMany(Pago::class);
-    }
-    public function taller()
-    {
-        return $this->belongsTo(Taller::class);
+        return $this->belongsTo(Curso::class, 'curso_id');
     }
 }

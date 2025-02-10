@@ -9,11 +9,32 @@ use Illuminate\Http\Request;
 
 class CursoController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $cursos = Curso::with(['aula', 'facilitador'])->paginate(6); // Relaciona las aulas y facilitadores
-        $facilitadores = Facilitador::all(); // Obtén los facilitadores para el modal de edición
-        $aulas = Aula::all(); // Obtén las aulas para el modal de edición
+        $query = Curso::query();
+
+        // Filtro por nombre del curso
+        if ($request->filled('search')) {
+            $query->where('nombre', 'LIKE', '%' . $request->search . '%');
+        }
+
+        // Filtro por facilitador
+        if ($request->filled('facilitador_id')) {
+            $query->where('facilitador_id', $request->facilitador_id);
+        }
+
+        // Filtro por aula
+        if ($request->filled('aula_id')) {
+            $query->where('aula_id', $request->aula_id);
+        }
+
+        // Obtener los cursos filtrados
+        $cursos = $query->paginate(6);
+
+        // Pasar los datos necesarios a la vista
+        $facilitadores = Facilitador::all();
+        $aulas = Aula::all();
+
         return view('cursos.index', compact('cursos', 'facilitadores', 'aulas'));
     }
 
@@ -41,6 +62,14 @@ class CursoController extends Controller
 
         return redirect()->route('cursos.index')->with('success', 'Curso registrado correctamente.');
     }
+
+    public function show($id)
+    {
+        $curso = Curso::with(['facilitador', 'aula', 'inscripciones.alumno', 'horarios'])->findOrFail($id);
+        
+        return view('cursos.show', compact('curso'));
+    }
+    
 
     public function edit(Curso $curso)
     {

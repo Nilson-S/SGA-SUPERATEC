@@ -51,16 +51,7 @@
                 </div>
             </div>
 
-            <!-- Talleres -->
-            <div class="col">
-                <div class="card h-100 text-white bg-info shadow-sm">
-                    <div class="card-body text-center">
-                        <i class="fas fa-tools fa-3x mb-3"></i>
-                        <h5 class="card-title fw-bold">Gestión de Talleres</h5>
-                        <a href="{{ route('talleres.index') }}" class="btn btn-light btn-sm mt-2">Ver</a>
-                    </div>
-                </div>
-            </div>
+
 
             <!-- Calificaciones -->
             <div class="col">
@@ -83,18 +74,7 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Pagos -->
-            <div class="col">
-                <div class="card h-100 text-white bg-dark shadow-sm">
-                    <div class="card-body text-center">
-                        <i class="fas fa-money-bill-wave fa-3x mb-3"></i>
-                        <h5 class="card-title fw-bold">Gestión de Pagos</h5>
-                        <a href="{{ route('pagos.index') }}" class="btn btn-light btn-sm mt-2">Ver</a>
-                    </div>
-                </div>
-            </div>
-
+            
             <!-- Horarios -->
             <div class="col">
                 <div class="card h-100 text-white bg-primary shadow-sm">

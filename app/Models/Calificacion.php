@@ -15,16 +15,16 @@ class Calificacion extends Model
     protected $fillable = [
         'alumno_id',
         'curso_id',
-        'nota',
+        'calificacion',
     ];
 
     public function alumno()
     {
-        return $this->belongsTo(Alumno::class);
+        return $this->belongsTo(Alumno::class, 'alumno_id');
     }
 
     public function curso()
     {
-        return $this->belongsTo(Curso::class);
+        return $this->belongsTo(Curso::class, 'curso_id');
     }
 }
